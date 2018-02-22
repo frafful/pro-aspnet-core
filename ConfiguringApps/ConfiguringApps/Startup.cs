@@ -48,12 +48,6 @@ namespace ConfiguringApps
                     template: "{controller=Home}/{action=Index}/{id?}"
                 );
             });
-
-            if ((Configuration.GetSection("ShortCircuitMiddleware")?.GetValue<bool>("EnableBrowserShortCircuit")).Value)
-            {
-                app.UseMiddleware<BrowserTypeMiddleware>();
-                app.UseMiddleware<ShortCircuitMiddleware>();
-            }
         }
 
         public void ConfigureDevelopment(IApplicationBuilder app, IHostingEnvironment env)
