@@ -25,7 +25,22 @@ namespace ConfiguringApps
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-
+                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                    config.AddEnvironmentVariables();
+                    if (args != null)
+                    {
+                        config.AddCommandLine(args);
+                    }
+                })
+                .ConfigureLogging((hostingContext, loggin) =>
+                {
+                    loggin.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    loggin.AddConsole();
+                    loggin.AddDebug();
+                })
+                .UseDefaultServiceProvider((context, options) =>
+                {
+                    options.ValidateScopes = context.HostingEnvironment.IsDevelopment();
                 })
                 .UseStartup<Startup>()
                 .Build();
